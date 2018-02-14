@@ -1,0 +1,23 @@
+#!/bin/bash
+trap "exit" INT:
+mkdir -p ./voice/
+rm -r ./voice/*.wav
+cp ./voice/0.old ./voice/0.wav
+n=0
+
+obs &
+google-chrome https://www.youtube.com/live_dashboard &
+google-chrome http://www.speechchat.com/ &
+cvlc --one-instance ./voice/ &
+
+while true; do
+  cp ./voice/0.wav ./voice/$n.wav
+  n=$(($n+1))
+  pacat -d combined.monitor | rec ./voice/$n.wav silence 1 0.01 3% 1 2.0 3% 
+  cvlc --one-instance ./voice/$(($n-1)).wav &
+  n=$(($n+1))
+  pid[0]=$!
+done ; fg
+pid[1]=$!
+trap "kill ${pid[0]} ${pid[1]}; exit 1" INT
+wait
