@@ -9,12 +9,14 @@ n=0
 % google-chrome https://www.youtube.com/live_dashboard &
 google-chrome http://www.speechchat.com/ &
 
-cvlc --one-instance ./voice/$n.wav &
 while true; do
   n=$(($n+1))
-  pacat -d combined.monitor | rec ./voice/$n.wav silence 1 0.01 3% 1 2.0 3% 
-  play ./voice/0.wav
+  pacat --record -d null | rec ./voice/$n.wav silence 1 0.01 3% 1 2.0 3% 
+  amixer set Master 0
   cvlc --one-instance ./voice/$n.wav &
+  play ./voice/0.wav 
+  amixer set Master 100
+  play ./voice/0.wav 
   pid[0]=$!
 done ; fg
 pid[1]=$!
