@@ -5,9 +5,9 @@ cp ./voice/0.old ./voice/0.wav
 mkdir -p ./voice/
 n=0
 
-% obs &
-% google-chrome https://www.youtube.com/live_dashboard &
-google-chrome http://www.speechchat.com/ &
+google-chrome --new-window https://www.youtube.com/live_dashboard http://www.speechchat.com/ &
+nautilus ~/Documents/Courses/ &
+obs &
 
 while true; do
   n=$(($n+1))
